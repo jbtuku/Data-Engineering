@@ -27,7 +27,7 @@ def callback(message: pubsub_v1.subscriber.message.Message) -> None:
 def monitor_inactivity():
     while not shutdown_event.is_set():
         if time.time() - last_message_time > idle_timeout:
-            print(f"\n🛑 No new messages in the last {idle_timeout} seconds. Stopping early.")
+            print(f"\n No new messages in the last {idle_timeout} seconds. Stopping early.")
             shutdown_event.set()
             streaming_pull_future.cancel()
             break
@@ -38,7 +38,7 @@ streaming_pull_future = subscriber.subscribe(subscription_path, callback=callbac
 monitor_thread = threading.Thread(target=monitor_inactivity)
 monitor_thread.start()
 
-print(f"🔄 Listening for messages on {subscription_path}... (Max {timeout}s)")
+print(f" Listening for messages on {subscription_path}... (Max {timeout}s)")
 
 with subscriber:
     try:
@@ -50,4 +50,4 @@ shutdown_event.set()
 monitor_thread.join()
 end = time.time()
 
-print(f"\n✅ Total messages received: {msg_count} in {end - start:.2f} seconds")
+print(f"\✅ Total messages received: {msg_count} in {end - start:.2f} seconds")

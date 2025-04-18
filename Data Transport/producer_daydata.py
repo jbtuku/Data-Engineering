@@ -31,7 +31,7 @@ def flush_futures(pending_futures, batch_number):
         try:
             future.result(timeout=60)
         except Exception as e:
-            print(f"❌ Error in future {j} of batch {batch_number}: {e}")
+            print(f" Error in future {j} of batch {batch_number}: {e}")
 
 
 for i, record in enumerate(data, 1):
@@ -42,17 +42,17 @@ for i, record in enumerate(data, 1):
         msg_count += 1
 
         if i % 5000 == 0:
-            print(f"✅ Published {i} messages so far... flushing batch", flush=True)
+            print(f" Published {i} messages so far... flushing batch", flush=True)
             flush_futures(futures, i // 5000)
             futures.clear()
 
     except Exception as e:
-        print(f"❌ Failed to publish message {i}: {e}")
+        print(f" Failed to publish message {i}: {e}")
 
 
 if futures:
-    print(f"🧹 Flushing remaining {len(futures)} messages...", flush=True)
+    print(f" Flushing remaining {len(futures)} messages...", flush=True)
     flush_futures(futures, "final")
 
 end_time = time.time()
-print(f"\n🚀 Finished publishing {msg_count} messages in {end_time - start_time:.2f} seconds to {topic_path}")
+print(f"\n Finished publishing {msg_count} messages in {end_time - start_time:.2f} seconds to {topic_path}")

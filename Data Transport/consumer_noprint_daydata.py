@@ -3,10 +3,10 @@ import os
 import time
 import threading
 
-# Set credentials
+
 os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = '/home/jbanerje/labservicekey.json'
 
-# Config
+
 project_id = "utopian-pact-456118-b3"
 subscription_id = "my-sub"
 subscription_path = pubsub_v1.SubscriberClient().subscription_path(project_id, subscription_id)
@@ -38,18 +38,18 @@ streaming_pull_future = subscriber.subscribe(subscription_path, callback=callbac
 monitor_thread = threading.Thread(target=monitor_inactivity)
 monitor_thread.start()
 
-print(f"🔄 Listening for messages on {subscription_path}...")
+print(f" Listening for messages on {subscription_path}...")
 
 with subscriber:
     try:
         streaming_pull_future.result(timeout=timeout)
     except Exception:
-        pass  # Graceful shutdown
+        pass  
 
 shutdown_event.set()
 monitor_thread.join()
 end = time.time()
 
-# 🧾 Final Summary
-print(f"\n✅ Total messages received: {msg_count} in {end - start:.2f} seconds")
+
+print(f"\n Total messages received: {msg_count} in {end - start:.2f} seconds")
 print(f"📥 How many breadcrumbs are consumed? → {msg_count}")
